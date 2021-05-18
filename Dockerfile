@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 ARG TARGETPLATFORM
 
 # renovate: datasource=github-releases depName=cloudflare/cloudflared
-ARG CLOUDFLARED_VERSION=2021.5.6
+ARG CLOUDFLARED_VERSION=2021.5.7
 
 RUN ARCH=$(echo $TARGETPLATFORM | sed 's|/|-|' | sed 's|/||') && \
     URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-${ARCH}" && \
