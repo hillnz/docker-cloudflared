@@ -12,7 +12,7 @@ RUN ARCH=$(echo $TARGETPLATFORM | sed 's|/|-|' | sed 's|/||') && \
     #                             ^^ HACK try armv6 if no armv7 build
 
 # Same base as official image
-FROM gcr.io/distroless/base-debian10:nonroot@sha256:38778ff7aa549bf6904c9d1c68bfe5946e96cac91dc32ba1f58e83bb9c9e6abe
+FROM gcr.io/distroless/base-debian10:nonroot@sha256:ccbc79c4fc35b92709d3987315cdb9e20b6e742546af7a7db10024641aa60572
 
 COPY --from=downloader --chown=nonroot /tmp/cloudflared /usr/local/bin/
 
