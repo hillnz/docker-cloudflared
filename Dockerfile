@@ -3,12 +3,12 @@ FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 ARG TARGETPLATFORM
 
 # renovate: datasource=github-releases depName=cloudflare/cloudflared
-ARG CLOUDFLARED_VERSION=2021.7.4
+ARG CLOUDFLARED_VERSION=2021.8.1
 
 RUN download() { \
         URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-$1" && \
         echo "URL: $URL" && \
-        curl -fL -o /tmp/cloudflared "$URL" \
+        curl -fL -o /tmp/cloudflared "$URL"; \
     }; \
     ARCH=$(echo $TARGETPLATFORM | sed 's|/|-|' | sed 's|/||') && \
     download "$ARCH" || download "$(echo "$ARCH" | sed 's/armv7/arm/')" && \
