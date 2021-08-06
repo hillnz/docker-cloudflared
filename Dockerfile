@@ -7,6 +7,7 @@ ARG CLOUDFLARED_VERSION=2021.7.4
 
 RUN ARCH=$(echo $TARGETPLATFORM | sed 's|/|-|' | sed 's|/||') && \
     URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-${ARCH}" && \
+    echo "URL: $URL" && \
     curl -fL --head "$URL" || URL="$(echo "$URL" | sed 's/armv7/arm/')" && curl -fL -o /tmp/cloudflared "$URL" && \
     chmod +x /tmp/cloudflared 
     #                             ^^ HACK try armv6 if no armv7 build
