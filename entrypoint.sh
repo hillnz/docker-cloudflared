@@ -2,12 +2,6 @@
 
 set -e
 
-# Support old behaviour, i.e. before home was /config
-if [ -n "$(ls -A /home/nonroot)" ] && [ -z "$(ls -A /config)" ]; then
-    echo "Using configuration in /home/nonroot is deprecated. Mount your configuration at /config."
-    ln -s /home/nonroot /config
-fi
-
 if [ -z "$TUNNEL_CRED_FILE" ]; then
     TUNNEL_CRED_FILE="/config/.cloudflared/${TUNNEL_ID}.json"
 fi

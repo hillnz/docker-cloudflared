@@ -25,11 +25,10 @@ RUN apt-get update && apt-get install -y \
 COPY --from=downloader --chown=nonroot /tmp/cloudflared /usr/local/bin/
 
 # a la old image version's distroless
-RUN useradd -U -u 65532 -d /config -s /bin/false nonroot
+RUN ln -s /home/nonroot /config && \
+    useradd -U -u 65532 -d /config -s /bin/false nonroot
 USER nonroot
 
 COPY entrypoint.sh /
-
-VOLUME [ "/config" ]
 
 ENTRYPOINT [ "/entrypoint.sh" ]
