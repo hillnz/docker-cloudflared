@@ -9,7 +9,40 @@ To do something useful, override the command, for example:
 ```
 docker run jonoh/cloudflared tunnel run my-tunnel
 ```
-See the [cloudflared Github](https://github.com/cloudflare/cloudflared) for more usage details.
+
+### Environment Variables
+
+You can see cloudflared's supported environment variables by running `cloudflared [<subcommand>] --help`.
+
+In addition, these custom environment variables are supported. 
+If all of them are set (and the command isn't overridden) then the image will execute `cloudflared tunnel run` with the configuration specified.
+
+Name            | Description
+---             | ---
+ACCOUNT_ID      | Cloudflare Account ID
+TUNNEL_ID       | Tunnel ID
+TUNNEL_NAME     | Tunnel Name
+TUNNEL_SECRET   | Tunnel Secret
+
+### Volumes
+
+Mount `/config` so that cloudflared's configuration file can be saved.
+
+### Example
+
+Using docker-compose:
+```yaml
+services:
+    cloudflared:
+        image: jonoh/cloudflared
+        environment:
+            - ACCOUNT_ID=d41d8cd98f00b204e9800998ecf8427e
+            - TUNNEL_ID=2e7d56f0-d51e-4c14-9330-5707b45d0813
+            - TUNNEL_NAME=helloworld
+            - TUNNEL_SECRET=aGVsbG93b3JsZF9oZWxsb3dvcmxkX2hlbGxvd29ybGQK
+        volumes:
+            - ./config:/config
+```
 
 ## Tags
 

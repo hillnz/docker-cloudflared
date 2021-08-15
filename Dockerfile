@@ -16,12 +16,19 @@ RUN download() { \
     #                               ^^ HACK try arm if no armv7 build
     
 
-# Same base as official image
-FROM gcr.io/distroless/base-debian10:nonroot@sha256:ccbc79c4fc35b92709d3987315cdb9e20b6e742546af7a7db10024641aa60572
+FROM debian:10.10-slim
+
+RUN apt-get update && apt-get install -y \
+        jq \
+    && rm -rf /var/lib/apt/lists
 
 COPY --from=downloader --chown=nonroot /tmp/cloudflared /usr/local/bin/
 
+# a la old image version's distroless
+RUN ln -s /home/nonroot /config && \
+    useradd -U -u 65532 -d /config -s /bin/false nonroot
 USER nonroot
 
-ENTRYPOINT ["cloudflared", "--no-autoupdate"]
-CMD ["version"]
+COPY entrypoint.sh /
+
+ENTRYPOINT [ "/entrypoint.sh" ]
