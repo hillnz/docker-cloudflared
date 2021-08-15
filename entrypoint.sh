@@ -7,10 +7,10 @@ if [ -z "$TUNNEL_CRED_FILE" ]; then
 fi
 
 make_config() {
-    if [ -f "$CONF_FILE" ]; then
+    if [ -f "$TUNNEL_CRED_FILE" ]; then
         return
     fi
-    mkdir -p "$(dirname "$CONF_FILE")"
+    mkdir -p "$(dirname "$TUNNEL_CRED_FILE")"
     # shellcheck disable=SC2016
     echo '{}' | jq \
         --arg ACCOUNT_ID "$ACCOUNT_ID" \
@@ -18,7 +18,7 @@ make_config() {
         --arg TUNNEL_NAME "$TUNNEL_NAME" \
         --arg TUNNEL_SECRET "$TUNNEL_SECRET" \
         '.AccountTag = $ACCOUNT_ID | .TunnelID = $TUNNEL_ID | .TunnelName = $TUNNEL_NAME | .TunnelSecret = $TUNNEL_SECRET' \
-        >"$CONF_FILE"
+        >"$TUNNEL_CRED_FILE"
 }
 
 args=()
