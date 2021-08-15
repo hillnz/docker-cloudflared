@@ -30,4 +30,6 @@ USER nonroot
 
 COPY entrypoint.sh /
 
-ENTRYPOINT ["/entrypoint.sh"]
+VOLUME [ "/config" ]
+
+ENTRYPOINT [ "/entrypoint.sh" ]
