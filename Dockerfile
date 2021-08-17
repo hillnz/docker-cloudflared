@@ -16,7 +16,7 @@ RUN download() { \
     #                               ^^ HACK try arm if no armv7 build
     
 
-FROM debian:10.10-slim
+FROM debian:11.0-slim
 
 RUN apt-get update && apt-get install -y \
         jq \
