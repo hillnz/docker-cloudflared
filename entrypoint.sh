@@ -26,6 +26,7 @@ if [ "$1" = "" ]; then
     if [ -n "$ACCOUNT_ID" ] && [ -n "$TUNNEL_ID" ] && [ -n "$TUNNEL_NAME" ] && [ -n "$TUNNEL_SECRET" ]; then
         make_config
         args=(tunnel run "$TUNNEL_ID")
+        args+=("$@")
     else
         args+=(version)
     fi
