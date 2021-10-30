@@ -27,7 +27,6 @@ COPY --from=downloader --chown=nonroot /tmp/cloudflared /usr/local/bin/
 # a la old image version's distroless
 RUN ln -s /home/nonroot /config && \
     useradd -U -u 65532 -d /config -s /bin/false nonroot
-USER nonroot
 
 COPY entrypoint.sh /
 

@@ -10,7 +10,10 @@ make_config() {
     if [ -f "$TUNNEL_CRED_FILE" ]; then
         return
     fi
-    mkdir -p "$(dirname "$TUNNEL_CRED_FILE")"
+
+    config_dir=$(dirname "$TUNNEL_CRED_FILE")
+    mkdir -p "$config_dir"
+    
     # shellcheck disable=SC2016
     echo '{}' | jq \
         --arg ACCOUNT_ID "$ACCOUNT_ID" \
@@ -19,6 +22,8 @@ make_config() {
         --arg TUNNEL_SECRET "$TUNNEL_SECRET" \
         '.AccountTag = $ACCOUNT_ID | .TunnelID = $TUNNEL_ID | .TunnelName = $TUNNEL_NAME | .TunnelSecret = $TUNNEL_SECRET' \
         >"$TUNNEL_CRED_FILE"
+    
+    chown -R "nonroot:nonroot" "$config_dir"
 }
 
 args=()
@@ -33,5 +38,8 @@ if [ "$1" = "" ]; then
 else
     args=("$@")
 fi
+
+# shellcheck disable=SC2117
+su nonroot
 
 exec cloudflared --no-autoupdate "${args[@]}"
