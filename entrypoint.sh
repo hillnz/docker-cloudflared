@@ -2,8 +2,8 @@
 
 set -e
 
-groupmod -o -g "$PUID" abc
-usermod -o -u "$PUID" abc
+groupmod -o -g "$PUID" nonroot
+usermod -o -u "$PUID" nonroot
 
 if [ -z "$TUNNEL_CRED_FILE" ]; then
     TUNNEL_CRED_FILE="/config/.cloudflared/${TUNNEL_ID}.json"
@@ -42,4 +42,4 @@ else
     args=("$@")
 fi
 
-exec sudo -u nonroot cloudflared --no-autoupdate "${args[@]}"
+exec sudo --preserve-env --set-home -u nonroot cloudflared --no-autoupdate "${args[@]}"
