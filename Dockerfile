@@ -18,15 +18,19 @@ RUN download() { \
 
 FROM debian:11.1-slim
 
+VOLUME /config
+ENV PUID=65532
+
 RUN apt-get update && apt-get install -y \
         jq \
+        sudo \
     && rm -rf /var/lib/apt/lists
 
 COPY --from=downloader --chown=nonroot /tmp/cloudflared /usr/local/bin/
 
 # a la old image version's distroless
 RUN ln -s /home/nonroot /config && \
-    useradd -U -u 65532 -d /config -s /bin/false nonroot
+    useradd -U -u ${PUID} -d /config -s /bin/false nonroot
 
 COPY entrypoint.sh /
 

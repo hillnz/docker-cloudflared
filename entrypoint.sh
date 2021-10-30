@@ -2,6 +2,9 @@
 
 set -e
 
+groupmod -o -g "$PUID" abc
+usermod -o -u "$PUID" abc
+
 if [ -z "$TUNNEL_CRED_FILE" ]; then
     TUNNEL_CRED_FILE="/config/.cloudflared/${TUNNEL_ID}.json"
 fi
@@ -12,7 +15,7 @@ make_config() {
     fi
 
     config_dir=$(dirname "$TUNNEL_CRED_FILE")
-    mkdir -p "$config_dir"
+    mkdir "$config_dir"
     
     # shellcheck disable=SC2016
     echo '{}' | jq \
@@ -39,7 +42,4 @@ else
     args=("$@")
 fi
 
-# shellcheck disable=SC2117
-su nonroot
-
-exec cloudflared --no-autoupdate "${args[@]}"
+exec sudo -u nonroot cloudflared --no-autoupdate "${args[@]}"
