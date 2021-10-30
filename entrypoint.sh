@@ -2,6 +2,9 @@
 
 set -e
 
+groupmod -o -g "$PUID" nonroot
+usermod -o -u "$PUID" nonroot
+
 if [ -z "$TUNNEL_CRED_FILE" ]; then
     TUNNEL_CRED_FILE="/config/.cloudflared/${TUNNEL_ID}.json"
 fi
@@ -10,7 +13,10 @@ make_config() {
     if [ -f "$TUNNEL_CRED_FILE" ]; then
         return
     fi
-    mkdir -p "$(dirname "$TUNNEL_CRED_FILE")"
+
+    config_dir=$(dirname "$TUNNEL_CRED_FILE")
+    mkdir "$config_dir"
+    
     # shellcheck disable=SC2016
     echo '{}' | jq \
         --arg ACCOUNT_ID "$ACCOUNT_ID" \
@@ -19,6 +25,8 @@ make_config() {
         --arg TUNNEL_SECRET "$TUNNEL_SECRET" \
         '.AccountTag = $ACCOUNT_ID | .TunnelID = $TUNNEL_ID | .TunnelName = $TUNNEL_NAME | .TunnelSecret = $TUNNEL_SECRET' \
         >"$TUNNEL_CRED_FILE"
+    
+    chown -R "nonroot:nonroot" "$config_dir"
 }
 
 args=()
@@ -34,4 +42,4 @@ else
     args=("$@")
 fi
 
-exec cloudflared --no-autoupdate "${args[@]}"
+exec sudo --preserve-env --set-home -u nonroot cloudflared --no-autoupdate "${args[@]}"
