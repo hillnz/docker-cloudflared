@@ -22,6 +22,7 @@ VOLUME /config
 ENV PUID=65532
 
 RUN apt-get update && apt-get install -y \
+        ca-certificates \
         jq \
         sudo \
     && rm -rf /var/lib/apt/lists
