@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+env:
+  DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  DOCKER_REPO: ${{ env.DOCKER_REPO }}
+  DOCKER_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -27,7 +32,7 @@ jobs:
         uses: docker/login-action@v1
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          registry: ${{ secrets.DOCKER_REGISTRY }}
+          registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
@@ -45,12 +50,10 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: "${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ steps.get_version.outputs.CF_VERSION }},${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:latest"
+          tags: "${{ env.DOCKER_IMAGE }}:${{ steps.get_version.outputs.CF_VERSION }},${{ env.DOCKER_IMAGE }}:latest"
 
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
-        env:
-          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
         if: (github.ref == 'refs/heads/main') && (env.DOCKER_REGISTRY == 'docker.io')
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
