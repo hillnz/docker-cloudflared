@@ -2,7 +2,7 @@
 
 set -e
 
-groupmod -o -g "$PUID" nonroot
+groupmod -o -g "$PGID" nonroot
 usermod -o -u "$PUID" nonroot
 
 if [ -z "$TUNNEL_CRED_FILE" ]; then

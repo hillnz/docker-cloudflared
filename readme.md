@@ -24,12 +24,13 @@ TUNNEL_ID       | Tunnel ID
 TUNNEL_NAME     | Tunnel Name
 TUNNEL_SECRET   | Tunnel Secret
 PUID            | User ID for the daemon (see Volumes)
+PGID            | Group ID for the daemon (see Volumes)
 
 ### Volumes
 
 Mount `/config` so that cloudflared's configuration file can be saved.
 
-The daemon runs as a user with id 65532 (like the official image). If this causes permission errors, you can override the uid by setting the PUID environment variable.
+The daemon runs as a user with id 65532 (like the official image). If this causes permission errors, you can override the uid by setting the PUID environment variable, or the gid by setting the PGID environment variable.
 
 ### Example
 
@@ -40,6 +41,7 @@ services:
         image: jonoh/cloudflared
         environment:
             - PUID=1000
+            - PGID=1000
             - ACCOUNT_ID=d41d8cd98f00b204e9800998ecf8427e
             - TUNNEL_ID=2e7d56f0-d51e-4c14-9330-5707b45d0813
             - TUNNEL_NAME=helloworld
