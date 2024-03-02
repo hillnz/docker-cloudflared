@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This image is deprecated because Cloudflare provides official arm64 builds now. The repo will be kept alive to allow Renovate's auto-updates to run but no further changes will be made.
+
 # cloudflared
 
 Unofficial Docker image containing [cloudflared](https://github.com/cloudflare/cloudflared).
