@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 ARG TARGETPLATFORM
 
 # renovate: datasource=github-releases depName=cloudflare/cloudflared
-ARG CLOUDFLARED_VERSION=2025.1.0
+ARG CLOUDFLARED_VERSION=2025.1.1
 
 RUN download() { \
         URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-$1" && \
