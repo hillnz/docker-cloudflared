@@ -16,7 +16,7 @@ RUN download() { \
     #                               ^^ HACK try arm if no armv7 build
     
 
-FROM debian:13.6-slim
+FROM debian:13.7-slim
 
 VOLUME /config
 ENV PUID=65532
